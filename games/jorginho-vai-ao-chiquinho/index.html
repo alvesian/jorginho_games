@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jorginho vai ao Chiquinho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stage">
+  <div class="cam" id="cam"><div class="world" id="world"></div></div>
+
+  <div class="hud">
+    <div class="hud-card title-card">
+      <div class="game-title">Jorginho vai ao Chiquinho</div>
+      <div class="game-sub">atravesse as ruas · <a href="../../index.html">outros jogos</a></div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-card stat">
+        <div class="stat-label">RUAS</div>
+        <div class="stat-value"><span id="crossed">0</span><span class="stat-total">/<span id="totalRoads">0</span></span></div>
+      </div>
+      <div class="hud-card stat stat-red">
+        <div class="stat-label">RECORDE</div>
+        <div class="stat-value" id="best">0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="hint">setas ou WASD · um passo por vez</div>
+    <div class="pad">
+      <div></div>
+      <button class="key" data-move="up" aria-label="Cima">↑</button>
+      <div></div>
+      <button class="key" data-move="left" aria-label="Esquerda">←</button>
+      <button class="key" data-move="down" aria-label="Baixo">↓</button>
+      <button class="key" data-move="right" aria-label="Direita">→</button>
+    </div>
+    <div class="pad-spacer"></div>
+  </div>
+
+  <div class="overlay" id="deadOverlay" hidden>
+    <div class="modal">
+      <div class="modal-title">Atropelado!</div>
+      <div class="modal-text">O sorvete do Jorginho vai ter que esperar. Olha o trânsito.</div>
+      <button class="btn-restart" data-restart>Tentar de novo</button>
+      <div class="modal-hint">OU APERTE ESPAÇO</div>
+    </div>
+  </div>
+
+  <div class="overlay" id="winOverlay" hidden>
+    <div class="modal">
+      <div class="modal-kicker">FASE 1 COMPLETA</div>
+      <div class="modal-title">Jorginho chegou!</div>
+      <div class="modal-text"><span id="winRoads">0</span> ruas atravessadas. Casquinha dupla, por favor.</div>
+      <button class="btn-restart" data-restart>Jogar de novo</button>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>

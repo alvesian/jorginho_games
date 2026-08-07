@@ -1,0 +1,289 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #e3d6bf;
+  overflow: hidden;
+}
+
+a { color: #d8232a; text-decoration: none; }
+a:hover { color: #a8171d; }
+
+@keyframes pop {
+  from { transform: scale(.92); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 620px;
+  overflow: hidden;
+  background: radial-gradient(115% 85% at 50% 18%, #f7f0e2 0%, #ded0b6 100%);
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  color: #3a2a1c;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cam {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform-style: preserve-3d;
+}
+
+.world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+}
+
+/* ---- HUD ---- */
+
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 22px 26px;
+  pointer-events: none;
+}
+
+.hud-card {
+  background: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 18px;
+  box-shadow: 0 5px 0 #3a2a1c;
+}
+
+.title-card { padding: 10px 18px 8px; pointer-events: auto; }
+
+.game-title {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -.01em;
+}
+
+.game-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #8a7358;
+  margin-top: 5px;
+}
+
+.hud-right { display: flex; gap: 10px; }
+
+.stat {
+  padding: 9px 16px 7px;
+  text-align: center;
+  min-width: 96px;
+}
+
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: #8a7358;
+}
+
+.stat-value {
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.05;
+}
+
+.stat-total { font-size: 15px; color: #8a7358; }
+
+.stat-red {
+  background: #d8232a;
+  color: #fbf4e6;
+  min-width: 86px;
+}
+
+.stat-red .stat-label { color: inherit; opacity: .75; }
+
+/* ---- Controles ---- */
+
+.controls {
+  position: absolute;
+  bottom: 26px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 34px;
+}
+
+.hint {
+  background: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 16px;
+  padding: 10px 16px 8px;
+  box-shadow: 0 5px 0 #3a2a1c;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #8a7358;
+  max-width: 210px;
+  line-height: 1.6;
+}
+
+.pad {
+  display: grid;
+  grid-template-columns: repeat(3, 58px);
+  grid-template-rows: repeat(2, 58px);
+  gap: 8px;
+}
+
+.pad .key:first-of-type { grid-column: 2; }
+
+.key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 16px;
+  box-shadow: 0 5px 0 #3a2a1c;
+  font-family: inherit;
+  color: inherit;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+.key:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.pad-spacer { width: 210px; }
+
+@media (max-width: 720px) {
+  .hint, .pad-spacer { display: none; }
+}
+
+/* ---- Overlays ---- */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 42, 28, .42);
+}
+
+.overlay[hidden] { display: none; }
+
+.modal {
+  animation: pop .18s ease-out;
+  background: #fbf4e6;
+  border: 4px solid #3a2a1c;
+  border-radius: 26px;
+  padding: 30px 38px 26px;
+  box-shadow: 0 8px 0 #3a2a1c;
+  text-align: center;
+  max-width: 400px;
+}
+
+.modal-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .16em;
+  color: #a08e78;
+}
+
+.modal-title {
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1.05;
+  margin-top: 6px;
+}
+
+.modal-text {
+  font-size: 17px;
+  color: #7a6247;
+  margin: 6px 0 20px;
+  line-height: 1.4;
+}
+
+.btn-restart {
+  display: inline-block;
+  background: #d8232a;
+  color: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 16px;
+  padding: 11px 26px 9px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 19px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #3a2a1c;
+}
+
+.btn-restart:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.modal-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: #a08e78;
+  margin-top: 14px;
+}
+
+/* ---- Placa do Chiquinho ---- */
+
+.sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.sign-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #d8232a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, .15);
+}
+
+.sign-scoop {
+  width: 26px;
+  height: 26px;
+  border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+  background: #fbf4e6;
+}
+
+.sign-name {
+  padding: 5px 14px 3px;
+  border-radius: 999px;
+  background: #fbf4e6;
+  border: 3px solid #d8232a;
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: .06em;
+  color: #d8232a;
+}
