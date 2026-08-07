@@ -64,7 +64,32 @@ a:hover { color: #a8171d; }
   box-shadow: 0 5px 0 #3a2a1c;
 }
 
-.title-card { padding: 10px 18px 8px; pointer-events: auto; }
+.hud-left {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #3a2a1c;
+  cursor: pointer;
+}
+
+.back-btn:hover { color: #3a2a1c; background: #fff9ee; }
+
+.back-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.title-card { padding: 10px 18px 8px; }
 
 .game-title {
   font-weight: 800;
