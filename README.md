@@ -1,4 +1,6 @@
-#  Jorginho Games 🍦
+<p align="center">
+  <img src="assets/logo.png" alt="Jorginho Games" width="290">
+</p>
 
 Coleção de mini-jogos em HTML/CSS/JS puro, sem dependências nem build. Cada jogo vive na sua própria pasta dentro de `games/` e o [`index.html`](index.html) da raiz é o hub que lista todos.
 
