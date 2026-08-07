@@ -1,4 +1,4 @@
-# Joguinhos do Jorginho 🍦
+#  Jorginho Games 🍦
 
 Coleção de mini-jogos em HTML/CSS/JS puro, sem dependências nem build. Cada jogo vive na sua própria pasta dentro de `games/` e o [`index.html`](index.html) da raiz é o hub que lista todos.
 
