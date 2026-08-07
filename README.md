@@ -2,6 +2,11 @@
   <img src="assets/logo.png" alt="Jorginho Games" width="290">
 </p>
 
+<p align="center">
+  <strong><a href="https://alvesian.github.io/jorginho_games/">▶ Jogar agora</a></strong><br>
+  <sub>alvesian.github.io/jorginho_games</sub>
+</p>
+
 Coleção de mini-jogos em HTML/CSS/JS puro, sem dependências nem build. Cada jogo vive na sua própria pasta dentro de `games/` e o [`index.html`](index.html) da raiz é o hub que lista todos.
 
 ## Jogos
@@ -12,7 +17,9 @@ Coleção de mini-jogos em HTML/CSS/JS puro, sem dependências nem build. Cada j
 
 ## Como rodar
 
-É tudo estático — basta servir a raiz do repositório:
+A versão publicada está em **<https://alvesian.github.io/jorginho_games/>** — todo merge na `main` atualiza o site automaticamente via GitHub Pages.
+
+Para rodar localmente, é tudo estático — basta servir a raiz do repositório:
 
 ```bash
 python3 -m http.server 8000
