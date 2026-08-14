@@ -1,0 +1,772 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #e3d6bf;
+  overflow: hidden;
+}
+
+a { color: #d8232a; text-decoration: none; }
+a:hover { color: #a8171d; }
+
+@keyframes pop {
+  from { transform: scale(.92); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+
+@keyframes flashbg {
+  0%, 49% { background: #120f18 }
+  50%, 100% { background: #d8232a }
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 1 }
+  50%, 100% { opacity: .08 }
+}
+
+@keyframes hue {
+  0% { color: #ff2fb8 }
+  25% { color: #2fe8ff }
+  50% { color: #f7e04a }
+  75% { color: #5cff8f }
+  100% { color: #ff2fb8 }
+}
+
+@keyframes marq {
+  from { transform: translateX(0) }
+  to { transform: translateX(-50%) }
+}
+
+@keyframes bar {
+  from { width: 4% }
+  to { width: 100% }
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  min-height: 620px;
+  overflow: hidden;
+  background: radial-gradient(115% 85% at 50% 18%, #f7f0e2 0%, #ded0b6 100%);
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  color: #3a2a1c;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Fundo escuro da academia, sobreposto ao gradiente da rua */
+.bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(100% 80% at 50% 20%, #241f31 0%, #100d16 100%);
+  opacity: 0;
+  transition: opacity .35s ease;
+}
+
+.bg.gym { opacity: 1; }
+
+.cam {
+  position: absolute;
+  left: 50%;
+  top: 62%;
+  transform-style: preserve-3d;
+}
+
+.world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-style: preserve-3d;
+}
+
+/* ---- HUD ---- */
+
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 22px 26px;
+  pointer-events: none;
+}
+
+.hud-card {
+  background: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 18px;
+  box-shadow: 0 5px 0 #3a2a1c;
+}
+
+.hud-left {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #3a2a1c;
+  cursor: pointer;
+}
+
+.back-btn:hover { color: #3a2a1c; background: #fff9ee; }
+
+.back-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.title-card { padding: 10px 18px 8px; }
+
+.game-title {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -.01em;
+}
+
+.game-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #8a7358;
+  margin-top: 5px;
+}
+
+.hud-right { display: flex; gap: 10px; }
+
+.hud-right[hidden] { display: none; }
+
+.stat {
+  padding: 9px 16px 7px;
+  text-align: center;
+  min-width: 96px;
+}
+
+.stat-wide { min-width: 110px; }
+
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: #8a7358;
+}
+
+.stat-value {
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.05;
+}
+
+.stat-total { font-size: 15px; color: #8a7358; }
+
+.stat-red {
+  background: #d8232a;
+  color: #fbf4e6;
+  min-width: 86px;
+}
+
+.stat-red .stat-label { color: inherit; opacity: .75; }
+.stat-red .stat-total { color: inherit; opacity: .7; }
+
+/* ---- Controles de caminhada ---- */
+
+.controls {
+  position: absolute;
+  bottom: 26px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 34px;
+}
+
+.controls[hidden] { display: none; }
+
+.hint {
+  background: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 16px;
+  padding: 10px 16px 8px;
+  box-shadow: 0 5px 0 #3a2a1c;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #8a7358;
+  max-width: 210px;
+  line-height: 1.6;
+}
+
+.pad {
+  display: grid;
+  grid-template-columns: repeat(3, 58px);
+  grid-template-rows: repeat(2, 58px);
+  gap: 8px;
+}
+
+.pad .key:first-of-type { grid-column: 2; }
+
+.key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 16px;
+  box-shadow: 0 5px 0 #3a2a1c;
+  font-family: inherit;
+  color: inherit;
+  font-size: 22px;
+  font-weight: 800;
+  cursor: pointer;
+  padding: 0;
+  touch-action: manipulation;
+}
+
+.key:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.pad-spacer { width: 210px; }
+
+@media (max-width: 720px) {
+  .hint, .pad-spacer { display: none; }
+}
+
+/* ---- Painel de repetições ---- */
+
+.reps {
+  position: absolute;
+  bottom: 26px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.reps[hidden] { display: none; }
+
+.rep-card {
+  background: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 18px;
+  padding: 10px 18px 9px;
+  box-shadow: 0 5px 0 #3a2a1c;
+  width: min(340px, 78vw);
+}
+
+.rep-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.rep-name {
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.rep-count {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: #8a7358;
+}
+
+.rep-track {
+  margin-top: 8px;
+  height: 12px;
+  border-radius: 999px;
+  background: #e6dcc6;
+  border: 2px solid #3a2a1c;
+  overflow: hidden;
+}
+
+.rep-bar {
+  height: 100%;
+  width: 0;
+  background: #d8232a;
+  transition: width .08s linear;
+}
+
+.rep-btns {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.rep-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 132px;
+  padding: 14px 20px 12px;
+  border-radius: 18px;
+  border: 3px solid #3a2a1c;
+  box-shadow: 0 5px 0 #3a2a1c;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 17px;
+  letter-spacing: .04em;
+  cursor: pointer;
+  background: #fbf4e6;
+  color: #c0b39c;
+  touch-action: manipulation;
+}
+
+.rep-btn.on {
+  background: #d8232a;
+  color: #fbf4e6;
+}
+
+.rep-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.rep-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #8a7358;
+}
+
+/* ---- Placa do Chiquinho ---- */
+
+.sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.sign-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #d8232a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, .15);
+}
+
+.sign-scoop {
+  width: 26px;
+  height: 26px;
+  border-radius: 50% 50% 50% 50%/60% 60% 40% 40%;
+  background: #fbf4e6;
+}
+
+.sign-name {
+  padding: 5px 14px 3px;
+  border-radius: 999px;
+  background: #fbf4e6;
+  border: 3px solid #d8232a;
+  font-weight: 800;
+  font-size: 19px;
+  letter-spacing: .06em;
+  color: #d8232a;
+}
+
+/* ---- Letreiro e etiquetas da academia ---- */
+
+.gym-sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.gym-sign-name {
+  padding: 6px 18px 4px;
+  border-radius: 12px;
+  background: #120f18;
+  border: 3px solid #ff2fb8;
+  color: #ff2fb8;
+  font-weight: 800;
+  font-size: 20px;
+  letter-spacing: .1em;
+  text-shadow: 0 0 12px rgba(255, 47, 184, .9);
+}
+
+.gym-sign-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  color: #2fe8ff;
+  text-shadow: 0 0 10px rgba(47, 232, 255, .8);
+}
+
+.m-pill {
+  padding: 5px 12px 3px;
+  border-radius: 999px;
+  background: #191521;
+  border: 3px solid #4a4157;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: .06em;
+  color: #f2ecdf;
+  white-space: nowrap;
+  box-shadow: 0 0 14px #4a415766;
+}
+
+.m-pill.active {
+  background: #d8232a;
+  border-color: #ff2fb8;
+  box-shadow: 0 0 14px #ff2fb866;
+}
+
+.m-pill.done {
+  background: #2e7d4f;
+  border-color: #5cff8f;
+  box-shadow: 0 0 14px #5cff8f66;
+}
+
+/* ---- Overlays ---- */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(58, 42, 28, .42);
+}
+
+.overlay-dark {
+  background: rgba(10, 8, 14, .72);
+  padding: 18px;
+}
+
+.overlay[hidden] { display: none; }
+
+.modal {
+  animation: pop .18s ease-out;
+  background: #fbf4e6;
+  border: 4px solid #3a2a1c;
+  border-radius: 26px;
+  padding: 30px 38px 26px;
+  box-shadow: 0 8px 0 #3a2a1c;
+  text-align: center;
+  max-width: 380px;
+}
+
+.modal-title {
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1.05;
+}
+
+.modal-text {
+  font-size: 17px;
+  color: #7a6247;
+  margin: 6px 0 20px;
+  line-height: 1.4;
+}
+
+.btn-restart {
+  display: inline-block;
+  background: #d8232a;
+  color: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 16px;
+  padding: 11px 26px 9px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 19px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #3a2a1c;
+}
+
+.btn-restart:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.modal-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: #a08e78;
+  margin-top: 14px;
+}
+
+/* ---- Vinheta da academia ---- */
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #120f18;
+  animation: flashbg .34s steps(1, end) infinite;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.flash[hidden] { display: none; }
+
+.flash-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  letter-spacing: .4em;
+  color: #2fe8ff;
+  animation: blink .28s steps(1, end) infinite;
+}
+
+.flash-title {
+  font-weight: 800;
+  font-size: clamp(40px, 9vw, 86px);
+  line-height: .95;
+  letter-spacing: -.02em;
+  color: #fbf4e6;
+  text-shadow: 6px 6px 0 #ff2fb8, -6px -6px 0 #2fe8ff;
+  animation: hue .9s steps(1, end) infinite;
+  text-align: center;
+}
+
+.flash-bar {
+  width: min(420px, 74vw);
+  height: 22px;
+  border: 3px solid #fbf4e6;
+  background: #120f18;
+  padding: 3px;
+}
+
+.flash-bar-fill {
+  height: 100%;
+  background: repeating-linear-gradient(90deg, #f7e04a 0 10px, #5cff8f 10px 20px);
+  animation: bar 2.1s linear forwards;
+}
+
+.flash-loading {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .24em;
+  color: #f7e04a;
+}
+
+.flash-marquee {
+  position: absolute;
+  bottom: 26px;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.flash-marquee-text {
+  display: inline-block;
+  animation: marq 6s linear infinite;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 14px;
+  letter-spacing: .2em;
+  color: #ff2fb8;
+}
+
+/* ---- GymRats (final) ---- */
+
+.phone {
+  animation: pop .18s ease-out;
+  width: min(336px, 92vw);
+  background: #141019;
+  border: 4px solid #0f0c14;
+  border-radius: 30px;
+  box-shadow: 0 10px 0 #0f0c14;
+  padding: 14px 14px 18px;
+  color: #f2ecdf;
+}
+
+.phone-bar {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 4px 12px;
+}
+
+.phone-logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  background: #d8232a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 14px;
+  color: #fbf4e6;
+}
+
+.phone-name { font-weight: 800; font-size: 17px; line-height: 1; }
+
+.phone-tag {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: #7b7288;
+}
+
+.rat-pane {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rat-pane[hidden] { display: none; }
+
+.rat-pane-center { text-align: center; }
+
+.rat-card {
+  background: #1e1826;
+  border-radius: 18px;
+  padding: 14px 16px 13px;
+}
+
+.rat-card-dashed { border: 2px dashed #4a4157; }
+
+.rat-kicker {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .16em;
+  color: #7b7288;
+}
+
+.rat-title {
+  font-weight: 800;
+  font-size: 21px;
+  line-height: 1.1;
+  margin-top: 4px;
+}
+
+.rat-text {
+  font-size: 14px;
+  color: #a99fb8;
+  margin-top: 3px;
+  line-height: 1.4;
+}
+
+.rat-strong { font-weight: 700; font-size: 16px; line-height: 1.3; }
+
+.rat-heading {
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 1.1;
+  padding: 0 4px;
+}
+
+.rat-final { font-weight: 800; font-size: 24px; line-height: 1.1; }
+
+.rat-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  background: #d8232a;
+  color: #f2ecdf;
+  border: 0;
+  border-radius: 18px;
+  padding: 14px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 19px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #8c1216;
+}
+
+.rat-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #8c1216;
+}
+
+.rat-btn-light {
+  background: #f2ecdf;
+  color: #141019;
+  box-shadow: 0 5px 0 #9a93a8;
+  font-size: 18px;
+  padding: 13px;
+}
+
+.rat-btn-light:active { box-shadow: 0 1px 0 #9a93a8; }
+
+.rat-plus { font-size: 24px; line-height: 1; }
+
+.log-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  background: #1e1826;
+  border-radius: 16px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+
+.log-check {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  background: #2e7d4f;
+  flex: none;
+}
+
+.log-label { font-weight: 700; font-size: 16px; }
+
+.log-reps {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: #a99fb8;
+}
+
+.rat-cols { display: flex; gap: 10px; }
+
+.rat-col {
+  flex: 1;
+  background: #1e1826;
+  border-radius: 16px;
+  padding: 11px 14px;
+}
+
+.rat-col-value { font-weight: 800; font-size: 17px; }
+
+.rat-badges {
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.rat-badge {
+  background: #3a3446;
+  border-radius: 999px;
+  padding: 5px 12px 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+}
+
+.rat-badge-green { background: #2e7d4f; }

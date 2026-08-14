@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jorginho vai ao Chiquinho 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stage">
+  <div class="bg" id="bg"></div>
+  <div class="cam" id="cam"><div class="world" id="world"></div></div>
+
+  <div class="hud">
+    <div class="hud-left">
+      <a class="hud-card back-btn" href="../../index.html" aria-label="Voltar ao menu">←</a>
+      <div class="hud-card title-card">
+        <div class="game-title">Jorginho vai ao Chiquinho</div>
+        <div class="game-sub" id="subtitle">fase 1 · atravesse as ruas</div>
+      </div>
+    </div>
+
+    <div class="hud-right" id="hudStreet">
+      <div class="hud-card stat">
+        <div class="stat-label">RUAS</div>
+        <div class="stat-value"><span id="crossed">0</span><span class="stat-total">/<span id="totalRoads">0</span></span></div>
+      </div>
+      <div class="hud-card stat stat-red">
+        <div class="stat-label">RECORDE</div>
+        <div class="stat-value" id="best">0</div>
+      </div>
+    </div>
+
+    <div class="hud-right" id="hudGym" hidden>
+      <div class="hud-card stat stat-wide">
+        <div class="stat-label">APARELHOS</div>
+        <div class="stat-value"><span id="doneCount">0</span><span class="stat-total">/3</span></div>
+      </div>
+      <div class="hud-card stat stat-red stat-wide">
+        <div class="stat-label">REPETIÇÕES</div>
+        <div class="stat-value"><span id="hudReps">0</span><span class="stat-total">/<span id="hudNeeded">10</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls" id="walkControls">
+    <div class="hint">setas ou WASD · um passo por vez</div>
+    <div class="pad">
+      <div></div>
+      <button class="key" data-move="up" aria-label="Cima">↑</button>
+      <div></div>
+      <button class="key" data-move="left" aria-label="Esquerda">←</button>
+      <button class="key" data-move="down" aria-label="Baixo">↓</button>
+      <button class="key" data-move="right" aria-label="Direita">→</button>
+    </div>
+    <div class="pad-spacer"></div>
+  </div>
+
+  <div class="reps" id="repPanel" hidden>
+    <div class="rep-card">
+      <div class="rep-head">
+        <div class="rep-name" id="repName"></div>
+        <div class="rep-count"><span id="repNow">0</span>/<span id="repNeeded">10</span></div>
+      </div>
+      <div class="rep-track"><div class="rep-bar" id="repBar"></div></div>
+    </div>
+    <div class="rep-btns">
+      <button class="rep-btn" id="repBtnL" data-tap="0"></button>
+      <button class="rep-btn" id="repBtnR" data-tap="1"></button>
+    </div>
+    <div class="rep-hint">alterne ← e → para completar a série</div>
+  </div>
+
+  <div class="overlay" id="deadOverlay" hidden>
+    <div class="modal">
+      <div class="modal-title">Atropelado!</div>
+      <div class="modal-text">O treino do Jorginho vai ter que esperar. Olha o trânsito.</div>
+      <button class="btn-restart" data-restart>Tentar de novo</button>
+      <div class="modal-hint">OU APERTE ESPAÇO</div>
+    </div>
+  </div>
+
+  <div class="flash" id="flashOverlay" hidden>
+    <div class="flash-kicker">&gt;&gt;&gt; BEM-VINDO A &lt;&lt;&lt;</div>
+    <div class="flash-title">CHIQUINHO FIT</div>
+    <div class="flash-bar"><div class="flash-bar-fill"></div></div>
+    <div class="flash-loading">CARREGANDO O TREINO...</div>
+    <div class="flash-marquee">
+      <div class="flash-marquee-text">SEM DOR SEM GANHO · SORVETE SÓ DEPOIS DA SÉRIE · SEM DOR SEM GANHO · SORVETE SÓ DEPOIS DA SÉRIE · SEM DOR SEM GANHO · SORVETE SÓ DEPOIS DA SÉRIE · SEM DOR SEM GANHO · SORVETE SÓ DEPOIS DA SÉRIE · </div>
+    </div>
+  </div>
+
+  <div class="overlay overlay-dark" id="doneOverlay" hidden>
+    <div class="phone">
+      <div class="phone-bar">
+        <div class="phone-logo">GR</div>
+        <div class="phone-name">GymRats</div>
+        <div class="phone-tag">SIMULAÇÃO</div>
+      </div>
+
+      <div class="rat-pane" id="ratFeed">
+        <div class="rat-card">
+          <div class="rat-kicker">DESAFIO DE AGOSTO</div>
+          <div class="rat-title">Turma do Chiquinho</div>
+          <div class="rat-text">6 participantes · dia 14 de 31</div>
+        </div>
+        <div class="rat-card rat-card-dashed">
+          <div class="rat-strong">Hoje: nenhum treino registrado</div>
+          <div class="rat-text">Jorginho, você treinou e não anotou.</div>
+        </div>
+        <button class="rat-btn" data-rat-next><span class="rat-plus">+</span><span>Registrar treino</span></button>
+      </div>
+
+      <div class="rat-pane" id="ratForm" hidden>
+        <div class="rat-heading">Treino de hoje</div>
+        <div id="logRows"></div>
+        <div class="rat-cols">
+          <div class="rat-col">
+            <div class="rat-kicker">DURAÇÃO</div>
+            <div class="rat-col-value">22 min</div>
+          </div>
+          <div class="rat-col">
+            <div class="rat-kicker">LOCAL</div>
+            <div class="rat-col-value">Chiquinho Fit</div>
+          </div>
+        </div>
+        <button class="rat-btn" data-rat-next>Publicar no desafio</button>
+      </div>
+
+      <div class="rat-pane rat-pane-center" id="ratDone" hidden>
+        <div class="rat-card">
+          <div class="rat-final">Treino registrado</div>
+          <div class="rat-text">3 aparelhos · <span id="doneReps">10</span> repetições cada · +1 ponto no desafio</div>
+          <div class="rat-badges">
+            <div class="rat-badge rat-badge-green">SEQUÊNCIA 4 DIAS</div>
+            <div class="rat-badge">1º LUGAR</div>
+          </div>
+        </div>
+        <div class="rat-text">Agora sim: casquinha dupla liberada.</div>
+        <button class="rat-btn rat-btn-light" data-restart>Jogar de novo</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
