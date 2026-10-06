@@ -15,6 +15,7 @@ Coleção de mini-jogos em HTML/CSS/JS puro, sem dependências nem build. Cada j
 | --- | --- | --- |
 | **Jorginho vai ao Chiquinho** | [`games/jorginho-vai-ao-chiquinho/`](games/jorginho-vai-ao-chiquinho/) | Atravesse as ruas cheias de trânsito e leve o Jorginho até a sorveteria do Chiquinho. Setas ou WASD para andar, um passo por vez. |
 | **Jorginho vai ao Chiquinho 2** | [`games/jorginho-vai-ao-chiquinho-2/`](games/jorginho-vai-ao-chiquinho-2/) | A sorveteria virou academia: depois de atravessar as ruas, o Jorginho encara a série no Chiquinho Fit. Fase 2 com três aparelhos — alterne ← e → para completar as repetições. |
+| **Jorginho Kart** | [`games/jorginho-kart/`](games/jorginho-kart/) | Corrida pseudo-3D de três voltas contra a Dona Casquinha, o Seu Milk-shake e o Tio Açaí. ↑ acelera, ← → viram, ↓ freia; casquinha dá turbo, milk-shake dá turbão e poça de sorvete faz rodar. |
 
 ## Como rodar
 
@@ -44,8 +45,12 @@ E abrir <http://localhost:8000>. (Abrir o `index.html` direto no navegador tamb�
     │   ├── index.html                # marcação e HUD
     │   ├── style.css                 # visual
     │   └── game.js                   # lógica e render (3D em CSS transforms)
-    └── jorginho-vai-ao-chiquinho-2/
-        ├── index.html                # marcação, HUD das duas fases e overlays
-        ├── style.css                 # visual da rua e da academia
-        └── game.js                   # lógica das duas fases e render
+    ├── jorginho-vai-ao-chiquinho-2/
+    │   ├── index.html                # marcação, HUD das duas fases e overlays
+    │   ├── style.css                 # visual da rua e da academia
+    │   └── game.js                   # lógica das duas fases e render
+    └── jorginho-kart/
+        ├── index.html                # HUD, controles na tela e placar final
+        ├── style.css                 # visual
+        └── game.js                   # pista pseudo-3D em canvas, rivais e itens
 ```
