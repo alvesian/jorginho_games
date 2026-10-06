@@ -1,0 +1,404 @@
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #bfe3f5;
+  overflow: hidden;
+}
+
+@keyframes pop {
+  from { transform: scale(.92); opacity: 0 }
+  to { transform: scale(1); opacity: 1 }
+}
+
+@keyframes bigpop {
+  0% { transform: scale(.4); opacity: 0 }
+  30% { transform: scale(1.15); opacity: 1 }
+  100% { transform: scale(1); opacity: 1 }
+}
+
+[hidden] { display: none !important; }
+
+.stage {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 520px;
+  overflow: hidden;
+  background: #bfe3f5;
+  font-family: 'Baloo 2', system-ui, sans-serif;
+  color: #3a2a1c;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+#cv {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  image-rendering: pixelated;
+}
+
+/* HUD */
+.hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 22px 26px;
+  pointer-events: none;
+}
+
+.hud-card {
+  background: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 18px;
+  box-shadow: 0 5px 0 #3a2a1c;
+}
+
+.hud-left {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  pointer-events: auto;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #3a2a1c;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.back-btn:hover { background: #fff9ee; }
+
+.back-btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.title-card { padding: 10px 18px 8px; }
+
+.game-title {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -.01em;
+}
+
+.game-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #8a7358;
+  margin-top: 5px;
+}
+
+.hud-right { display: flex; gap: 10px; }
+
+.stat {
+  padding: 9px 16px 7px;
+  text-align: center;
+  min-width: 92px;
+}
+
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: #8a7358;
+}
+
+.stat-value {
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1.05;
+}
+
+.stat-total { font-size: 15px; color: #8a7358; }
+
+.stat-red { background: #d8232a; color: #fbf4e6; }
+.stat-red .stat-label { color: inherit; opacity: .75; }
+
+/* Toast e contagem */
+.toast-wrap {
+  position: absolute;
+  top: 104px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.toast {
+  animation: pop .16s ease-out;
+  background: #3a2a1c;
+  color: #fbf4e6;
+  border: 3px solid #fbf4e6;
+  border-radius: 999px;
+  padding: 7px 18px 5px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .16em;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, .25);
+}
+
+.big-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.big {
+  animation: bigpop .5s ease-out;
+  font-weight: 800;
+  font-size: 140px;
+  line-height: 1;
+  color: #fbf4e6;
+  -webkit-text-stroke: 5px #3a2a1c;
+  text-shadow: 0 10px 0 #3a2a1c;
+}
+
+.big.go { font-size: 120px; color: #d8232a; }
+
+/* Controles */
+.controls {
+  position: absolute;
+  bottom: 22px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 0 26px;
+}
+
+.ctl-group { display: flex; gap: 10px; align-items: flex-end; }
+
+.key {
+  width: 66px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fbf4e6;
+  color: #3a2a1c;
+  border: 3px solid #3a2a1c;
+  border-radius: 18px;
+  box-shadow: 0 5px 0 #3a2a1c;
+  font-family: inherit;
+  font-size: 26px;
+  font-weight: 800;
+  cursor: pointer;
+  touch-action: none;
+  padding: 0;
+}
+
+.key:active, .key.on {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.key-brake {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .1em;
+  font-weight: 600;
+}
+
+.key-gas {
+  width: 92px;
+  height: 92px;
+  background: #d8232a;
+  color: #fbf4e6;
+  border-radius: 50%;
+  box-shadow: 0 6px 0 #3a2a1c;
+  font-size: 20px;
+}
+
+.key-gas:active, .key-gas.on {
+  transform: translateY(5px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+.speedo {
+  padding: 9px 18px 8px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.speed-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+}
+
+.speed { font-weight: 800; font-size: 30px; line-height: 1; }
+
+.speed-unit, .speed-time, .speed-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  color: #8a7358;
+}
+
+.speed-unit { font-size: 10px; letter-spacing: .14em; }
+
+.speed-time { font-size: 11px; letter-spacing: .12em; margin-top: 3px; }
+
+.speed-hint {
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #a08e78;
+  margin-top: 5px;
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+/* Fim de corrida */
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(58, 42, 28, .45);
+}
+
+.end-card {
+  animation: pop .18s ease-out;
+  background: #fbf4e6;
+  border: 4px solid #3a2a1c;
+  border-radius: 26px;
+  padding: 30px 38px 26px;
+  box-shadow: 0 8px 0 #3a2a1c;
+  text-align: center;
+  max-width: 420px;
+  width: 100%;
+}
+
+.end-kicker, .end-hint {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .16em;
+  color: #a08e78;
+}
+
+.end-hint { letter-spacing: .14em; margin-top: 14px; }
+
+.end-title {
+  font-weight: 800;
+  font-size: 34px;
+  line-height: 1.05;
+  margin: 6px 0 10px;
+  color: #d8232a;
+}
+
+.end-line {
+  font-size: 19px;
+  color: #5c4633;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 18px 0 6px;
+  text-align: left;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 3px;
+  border-radius: 12px;
+  background: #efe5d2;
+  color: #3a2a1c;
+}
+
+.result.me { background: #d8232a; color: #fbf4e6; }
+
+.result-pos {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: .1em;
+  width: 30px;
+  display: inline-block;
+}
+
+.result-name { font-weight: 800; font-size: 17px; }
+
+.end-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: #8a7358;
+  margin: 10px 0 20px;
+}
+
+.btn-restart {
+  display: inline-block;
+  background: #d8232a;
+  color: #fbf4e6;
+  border: 3px solid #3a2a1c;
+  border-radius: 16px;
+  padding: 11px 26px 9px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 19px;
+  cursor: pointer;
+  box-shadow: 0 5px 0 #3a2a1c;
+}
+
+.btn-restart:active {
+  transform: translateY(4px);
+  box-shadow: 0 1px 0 #3a2a1c;
+}
+
+/* Telas estreitas: o velocímetro sobe pra não brigar com os botões */
+@media (max-width: 720px) {
+  .hud { padding: 14px 16px; gap: 8px; }
+  .game-sub { display: none; }
+  .game-title { font-size: 19px; }
+  .title-card { padding: 9px 12px 6px; display: flex; align-items: center; }
+  .back-btn { width: 46px; font-size: 22px; }
+  .stat { min-width: 64px; padding: 7px 10px 5px; }
+  .stat-value { font-size: 22px; }
+  .toast-wrap { top: 176px; }
+  .controls { padding: 0 16px; bottom: 16px; }
+  .speedo {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 90px;
+    bottom: auto;
+    white-space: nowrap;
+  }
+  .speed-hint { display: none; }
+  .big { font-size: 100px; }
+  .big.go { font-size: 86px; }
+}

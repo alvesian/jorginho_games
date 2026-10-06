@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jorginho Kart</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="stage" id="stage">
+  <canvas id="cv"></canvas>
+
+  <div class="hud">
+    <div class="hud-left">
+      <a class="hud-card back-btn" href="../../index.html" aria-label="Voltar ao menu">←</a>
+      <div class="hud-card title-card">
+        <div class="game-title">Jorginho Kart</div>
+        <div class="game-sub">grande prêmio do chiquinho</div>
+      </div>
+    </div>
+    <div class="hud-right">
+      <div class="hud-card stat">
+        <div class="stat-label">VOLTA</div>
+        <div class="stat-value"><span id="lap">1</span><span class="stat-total">/<span id="laps">3</span></span></div>
+      </div>
+      <div class="hud-card stat stat-red">
+        <div class="stat-label">POSIÇÃO</div>
+        <div class="stat-value" id="rank">4º</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toastWrap" hidden><div class="toast" id="toast"></div></div>
+
+  <div class="big-wrap" id="bigWrap" hidden><div class="big" id="big"></div></div>
+
+  <div class="controls">
+    <div class="ctl-group">
+      <button class="key" data-key="left" aria-label="Esquerda">←</button>
+      <button class="key" data-key="right" aria-label="Direita">→</button>
+    </div>
+
+    <div class="hud-card speedo">
+      <div class="speed-row">
+        <div class="speed" id="kmh">0</div>
+        <div class="speed-unit">KM/H</div>
+      </div>
+      <div class="speed-time"><span id="time">0:00.0</span> · MELHOR <span class="best">--:--</span></div>
+      <div class="speed-hint">↑ acelera · ← → viram · casquinha = turbo · milk-shake = turbão · poça de sorvete = escorrega</div>
+    </div>
+
+    <div class="ctl-group ctl-right">
+      <button class="key key-brake" data-key="down">FREIO</button>
+      <button class="key key-gas" data-key="up">GÁS</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="endOverlay" hidden>
+    <div class="end-card">
+      <div class="end-kicker">BANDEIRADA</div>
+      <div class="end-title" id="endTitle"></div>
+      <div class="end-line" id="endLine"></div>
+      <div class="results" id="results"></div>
+      <div class="end-time">TEMPO <span id="finalTime"></span> · MELHOR <span class="best">--:--</span></div>
+      <button class="btn-restart" id="restart">Correr de novo</button>
+      <div class="end-hint">OU APERTE ESPAÇO</div>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
